@@ -41,6 +41,7 @@ export default class XVueRouter {
     this.options.routes.forEach(route => {
       this.routeMap[route.path] = route.component
     })
+    console.log(this.routeMap)
   }
 
   initComponents (Vue) {
@@ -56,7 +57,7 @@ export default class XVueRouter {
       render (h) {
         return h('a', {
           attrs: {
-            href: this.to
+            href: '#' + this.to
           },
           on: {
             click: this.handleClick
@@ -65,8 +66,6 @@ export default class XVueRouter {
       },
       methods: {
         handleClick (e) {
-          e.preventDefault()
-          history.pushState({}, '', this.to)
           this.$router.data.current = this.to
         }
       }
@@ -81,8 +80,8 @@ export default class XVueRouter {
   }
 
   initEvent () {
-    window.addEventListener('popstate', () => {
-      this.data.current = window.location.pathname
+    window.addEventListener('hashchange', () => {
+      this.data.current = window.location.hash.substr(1)
     })
   }
 }
